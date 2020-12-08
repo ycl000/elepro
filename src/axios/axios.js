@@ -4,7 +4,7 @@ import axios from "axios"
 axios.interceptors.request.use(config=>{
     config.baseURL="https://mock.yonyoucloud.com/mock/16414";
     // if (token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-        //config.headers.myAuthorization = mytoken；
+        config.headers.myAuthorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjUwMCwicmlkIjowLCJpYXQiOjE2MDczOTQ5OTksImV4cCI6MTYwNzQ4MTM5OX0.rzmxKwx5n7-XeqhvNd3_F4ljmK8dqpnomMGJmgpHNsA"
     //config.headers['Authorization'] = token;
     // } 
     // if(!config.hasOwnProperty('showError')){

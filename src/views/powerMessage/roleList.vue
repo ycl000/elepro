@@ -5,25 +5,104 @@
             <el-table :data="tableData" stripe style="width: 100%">
                 <el-table-column type="expand">
                     <template slot-scope="props">
-                        <!--  -->
-                        {{props.row.children}}
-                        
+                        <!-- <el-tag
+                        v-for="tag in props.row.children"
+                        :key="tag.authName"
+                        closable
+                        type="success">
+                        {{tag.authName}}
+
+
+                        </el-tag> -->
+                         <!-- <el-row type="flex" class="row-bg">  -->
+                               <el-row type="flex" :class="[index=='0'?'bdtop':'','row-bg bdtottom bdright bdlrft']" :key="index" v-for="(tag,index) in props.row.children">
+                                   <el-col :span="5" class="bdright">
+                                       <el-row type="flex" class="row-bg">
+                                        <el-tag
+                                        @close="handleClose(index)"
+                                        closable
+                                         effect="dark"
+                                        type="">
+                                            {{tag.authName}}
+                                            
+                                        </el-tag>
+                                        <i class="el-icon-caret-right"></i>
+                                       </el-row>
+                                       
+                                   </el-col>
+                                   <el-col :span="19">
+                                       <el-row type="flex" :class="[index!=tag.children.length-1?'bdtottom':'','row-bg']" :key="index" v-for="(tag2,index) in tag.children">
+                                           <el-col :span="6" class="bdright">
+                                               <el-tag
+                                               @close="handleClose(index)"
+                                                closable
+                                                effect="dark"
+                                                type="success">
+                                                    {{tag2.authName}}
+                                                    
+                                                </el-tag>
+                                                <i class="el-icon-caret-right"></i>
+                                           </el-col>
+                                           <el-col :span="18" class="tag_col">
+                                                <!-- <el-row type="flex" class="row-bg" > -->
+                                                    <el-tag class="tag_level3" :key="index" v-for="(tag3,index) in tag2.children"
+                                                    closable
+                                                    @close="handleClose(index)"
+                                                    effect="dark"
+                                                    type="warning">
+                                                        {{tag3.authName}}
+                                                    </el-tag>
+                                                <!-- </el-row> -->
+                                           </el-col>
+                                        
+                                       </el-row>
+                                   </el-col>
+
+                               </el-row>
+                        <!-- </el-row> -->
+                            <!-- </el-col>
+                            <el-col :span="6"><div class="grid-content bg-purple-light"></div></el-col>
+                            <el-col :span="6"><div class="grid-content bg-purple"></div></el-col>
+                        </el-row> -->
                     </template>
-                    </el-table-column>
+                </el-table-column>
                 <el-table-column type="index" > </el-table-column>
                 <el-table-column prop="roleName" label="角色名称">
                 </el-table-column>
                 <el-table-column prop="roleDesc" label="角色描述">
                 </el-table-column>
                 <el-table-column label="操作">
+                    <template slot-scope="scope">
                     <el-button type="primary" icon="el-icon-edit" size="mini"
                         >编辑</el-button>
                         <el-button type="danger" icon="el-icon-delete" size="mini"
                         >删除</el-button>
-                        <el-button type="warning" icon="el-icon-s-tools" size="mini">分配权限</el-button>
+                        <el-button type="warning" @click="powerClick(scope.row)" icon="el-icon-s-tools" size="mini">分配权限</el-button>
+                </template>
                 </el-table-column>
             </el-table>
         </el-card>
+        <el-dialog
+        title="分配权限"
+        :visible.sync="dialogVisible"
+        width="40%"
+        @close="closeDialog"
+         class="dialog_left">
+
+        <el-tree
+        :data="powerTree"
+        :props="props"
+        node-key="id"
+        show-checkbox
+        default-expand-all
+        :default-checked-keys="checkedKeys"
+        @check-change="handleCheckChange">
+        </el-tree>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
+            <el-button type="primary" @click="dialogVisible = false" size="mini">确 定</el-button>
+        </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -38,7 +117,14 @@ export default {
             password: "",
             activeindex: "1-1",
             main_nav_title: { title1: "权限管理", title2: "角色列表" },
-            tableData: []
+            tableData: [],
+            dialogVisible:false,
+            props: {
+            label: 'authName',
+            children: 'children'
+            },
+            powerTree:[],
+            checkedKeys:["116","105"],//默认选择权限的数组
         }
     },
     components: {
@@ -46,6 +132,7 @@ export default {
     },
     created() {
         this.getRoleList()
+        this.getPowerTree()
        
     },
     mounted() {
@@ -54,64 +141,77 @@ export default {
         async getRoleList(){
              const {data: res } =  await this.$http.get("/roleList")
              this.tableData = res.data
+            //  console.log()
+        },
+        async getPowerTree(){
+             const {data: res } =  await this.$http.get("/powerTree")
+             this.powerTree = res.data
+             console.log(res.data)
+        },
+        handleClose(e){
+            console.log(e)
+            this.$alert('是否确定删除该权限', '删除权限', {
+            confirmButtonText: '确定',
+            callback: () => {
+                this.$message({
+                type: 'info',
+                message: "测试删除 尚未操作数据库"//`${action}`
+                });
+            }
+        });
+        },
+        closeDialog(){
+            console.log("关闭")
+        },
+        handleCheckChange(){},
+        powerClick(data){
+            this.dialogVisible = true
+            this.getRolepower(data.children)
+        },
+        //角色权限获取
+        getRolepower(data){
+            console.log(data)
+            for(var item of data){
+                
+                if(item){
+                    this.getRolepower(item.children)
+                }
+               
+            }
         }
+
     }
 }
 </script>
 <style>
-.welcome_title {
-    text-align: center;
-    text-shadow: 3px 3px 3px gray;
-    font-size: 30px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-.el-header {
-    padding: 0px 60px;
-    background-image: url(/img/bg.3cc93034.jpg);
-    background-repeat: no-repeat;
-    text-align: center;
-    background-size: cover;
-    line-height: 60px;
-    color: white;
+.dialog_left{
+    text-align: left;
 }
 
-.el-footer {
-    background-color: #b3c0d1;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
+.tag_level3{
+    margin: 10px ;
+    text-align: left;
 }
-
-.el-main {
-    background-color: #e9eef3;
-    color: #333;
-    text-align: center;
-    /* line-height: 160px; */
-    height: 100%;
-    padding: 0px !important;
+.tag_col{
+    text-align: left;
 }
-.el-main > div {
-    padding: 0px 40px;
-    background: #e9eef3;
+.bdtottom{
+    border-bottom: 1px solid #ececec;
 }
-
-body > .el-container {
-    margin-bottom: 40px;
+.bdtop{
+    border-top: 1px solid #ececec;
 }
-.el-container {
-    height: 100%;
+.bdright{
+    border-right: 1px solid #ececec;
 }
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-    line-height: 260px;
+.bdlrft{
+    border-left: 1px solid #ececec;
 }
-
-.el-container:nth-child(7) .el-aside {
-    line-height: 320px;
-}
-.el-table td,
-.el-table th {
-    text-align: center !important;
+.el-col-5,
+.el-col-5>.el-row,
+.el-col-6{
+        display: flex;
+    align-items: center;
+    justify-content: center;
 }
 </style>

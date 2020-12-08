@@ -57,6 +57,11 @@ const routes = [
                 path:"/sortPramas",
                 name:"sortPramas",
                 component:()=>import("../views/productMessage/sortPramas")
+            },
+            {
+                path:"/orderList",
+                name:"orderList",
+                component:()=>import("../views/orderMessage/orderList")
             }
         ]
     },

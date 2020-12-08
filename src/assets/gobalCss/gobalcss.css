@@ -1,0 +1,49 @@
+.el-header {
+    padding: 0px 60px;
+    background-image: url(/img/bg.3cc93034.jpg);
+    background-repeat: no-repeat;
+    text-align: center;
+    background-size: cover;
+    line-height: 60px;
+    color: white;
+}
+.el-table td,
+.el-table th {
+    text-align: center !important;
+}
+.el-footer {
+    background-color: #b3c0d1;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+}
+body > .el-container {
+    margin-bottom: 40px;
+}
+.el-container {
+    height: 100%;
+}
+.el-container:nth-child(5) .el-aside,
+.el-container:nth-child(6) .el-aside {
+    line-height: 260px;
+}
+
+.el-container:nth-child(7) .el-aside {
+    line-height: 320px;
+}
+.el-main {
+    background-color: #e9eef3;
+    color: #333;
+    text-align: center;
+    /* line-height: 160px; */
+    height: 100%;
+    padding: 0px !important;
+}
+.el-main > div {
+    padding: 0px 40px;
+    background: #e9eef3;
+    margin-bottom: 100px;
+}
+.el-pagination{
+    margin-top: 20px;
+}

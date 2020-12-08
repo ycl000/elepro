@@ -31,7 +31,11 @@
                 <el-table-column prop="goods_price"  label="商品价格" >
                 </el-table-column>
                 <el-table-column prop="goods_weight" label="商品重量/g"> </el-table-column>
-                <el-table-column prop="add_time" label="添加时间">
+                <el-table-column prop="add_time" min-width="100" label="添加时间">
+                    <template slot-scope="scope">
+                        {{scope.row.add_time|formatDate}}
+                    </template>
+                    
                     <!-- <el-switch :value=""> -->
                     <!-- <template slot-scope="scope"
                         ><el-switch
@@ -63,13 +67,14 @@
                 @current-change="handleCurrentChange"
                 :page-count="pageCount"
                 :current-page="currentPage4"
-                :page-sizes="[100, 200, 300, 400]"
-                :page-size="100"
+                :page-sizes="[10, 20, 100, 200]"
+                :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="400">
+                :total="total">
                 </el-pagination>
             </div>
         </el-card>
+
     </div>
 </template>
 
@@ -87,14 +92,34 @@ export default {
             activeindex: "1-1",
             main_nav_title: { title1: "商品管理", title2: "商品列表" },//面包屑标题
             tableData: [],//数据
-            currentPage4:1,
-            pageCount:10
+            currentPage4:1,//当前第几页
+            pageCount:5,
+            pageSize:10,
+            total:0,//一共多少条数据
+            dialogVisible: false
 
         }
     },
     components: {
         main_nav
     },
+    filters: {
+      formatDate: function (value) {
+        let date = new Date(value);
+        let y = date.getFullYear();
+        let MM = date.getMonth() + 1;
+        MM = MM < 10 ? ('0' + MM) : MM;
+        let d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        let h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        let m = date.getMinutes();
+        m = m < 10 ? ('0' + m) : m;
+        let s = date.getSeconds();
+        s = s < 10 ? ('0' + s) : s;
+        return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+      }
+      },
     created() {
         this.getUserList()
     },
@@ -125,6 +150,8 @@ export default {
         async getUserList(){
             const {data: res } =  await this.$http.get("/productList")
             this.tableData = res.data.goods
+            // conso
+            this.total = res.data.goods.length
         },
         swithMessage(op, type) {
             this.$message({
@@ -142,73 +169,30 @@ export default {
                 row.status = res
                 this.swithMessage(msg, "success")
             }, 200)
+        },
+        // 更改一页显示条数
+        handleSizeChange(newValue){
+            console.log(newValue)
+            this.pageSize = newValue
+        },
+        // 当前页 被替换
+        handleCurrentChange(newValue){
+            console.log(newValue)
+            this.currentPage4 = newValue
         }
     }
 }
 </script>
-<style>
-.el-header {
-    padding: 0px 60px;
-    background-image: url(/img/bg.3cc93034.jpg);
-    background-repeat: no-repeat;
-    text-align: center;
-    background-size: cover;
-    line-height: 60px;
-    color: white;
-}
+<style scoped>
+
 .block{
     padding: 10px 0;
     text-align: left;
 }
-.el-footer {
-    background-color: #b3c0d1;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-}
-
-.el-main {
-    background-color: #e9eef3;
-    color: #333;
-    text-align: center;
-    /* line-height: 160px; */
-    height: 100%;
-    padding: 0px !important;
-}
-.el-main > div {
-    padding: 0px 40px;
-    background: #e9eef3;
-}
-
-body > .el-container {
-    margin-bottom: 40px;
-}
-.el-container {
-    height: 100%;
-}
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-    line-height: 260px;
-}
-
-.el-container:nth-child(7) .el-aside {
-    line-height: 320px;
-}
-.welcome_title {
-    text-align: center;
-    text-shadow: 3px 3px 3px gray;
-    font-size: 30px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-
-.el-table td,
-.el-table th {
-    text-align: center !important;
-}
 .el-row {
     margin-bottom: 20px;
 }
+
 .el-col.el-col-6 {
     padding-left: 20px !important;
 }

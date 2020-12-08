@@ -43,15 +43,15 @@
                     <!-- </el-switch> -->
                 </el-table-column>
                 <el-table-column label="操作" width="180">
-                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
+                    <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top">
                     <el-button type="danger" icon="el-icon-delete" size="mini"
                         ></el-button>
                     </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+                    <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top">
                     <el-button type="primary" icon="el-icon-edit" size="mini"
                         ></el-button>
                     </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="详情" placement="top">
+                    <el-tooltip class="item" effect="dark" :enterable="false" content="详情" placement="top">
                         <el-button type="info" icon="el-icon-document" size="mini"></el-button>
                     </el-tooltip>
                 </el-table-column>
@@ -129,62 +129,7 @@ export default {
     }
 }
 </script>
-<style>
-.welcome_title {
-    text-align: center;
-    text-shadow: 3px 3px 3px gray;
-    font-size: 30px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-.el-header {
-    padding: 0px 60px;
-    background-image: url(/img/bg.3cc93034.jpg);
-    background-repeat: no-repeat;
-    text-align: center;
-    background-size: cover;
-    line-height: 60px;
-    color: white;
-}
-
-.el-footer {
-    background-color: #b3c0d1;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-}
-
-.el-main {
-    background-color: #e9eef3;
-    color: #333;
-    text-align: center;
-    /* line-height: 160px; */
-    height: 100%;
-    padding: 0px !important;
-}
-.el-main > div {
-    padding: 0px 40px;
-    background: #e9eef3;
-}
-
-body > .el-container {
-    margin-bottom: 40px;
-}
-.el-container {
-    height: 100%;
-}
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-    line-height: 260px;
-}
-
-.el-container:nth-child(7) .el-aside {
-    line-height: 320px;
-}
-.el-table td,
-.el-table th {
-    text-align: center !important;
-}
+<style scoped>
 .el-row {
     margin-bottom: 20px;
 }

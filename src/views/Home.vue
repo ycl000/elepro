@@ -72,15 +72,7 @@ export default {
 }
 </script>
 <style >
-.el-header {
-    padding: 0px 60px;
-    background-image: url(/img/bg.3cc93034.jpg);
-    background-repeat: no-repeat;
-    text-align: center;
-    background-size: cover;
-    line-height: 60px;
-    color: white;
-}
+
 .el-breadcrumb {
     /* padding: 0px 20px; */
     line-height: 40px !important;
@@ -88,34 +80,5 @@ export default {
     /* background: white; */
 }
 
-.el-footer {
-    background-color: #b3c0d1;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-}
 
-.el-main {
-    background-color: #e9eef3;
-    color: #333;
-    text-align: center;
-    /* line-height: 160px; */
-    height: 100%;
-    padding: 0px !important;
-}
-
-body > .el-container {
-    margin-bottom: 40px;
-}
-.el-container {
-    height: 100%;
-}
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-    line-height: 260px;
-}
-
-.el-container:nth-child(7) .el-aside {
-    line-height: 320px;
-}
 </style>
