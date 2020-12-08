@@ -71,7 +71,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style >
 .el-header {
     padding: 0px 60px;
     background-image: url(/img/bg.3cc93034.jpg);

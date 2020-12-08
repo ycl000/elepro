@@ -3,10 +3,11 @@ import App from "./App.vue"
 import router from "./router"
 import store from "./store"
 import "./plugins/element.js"
-import $ from "./assets/jquery-3.4.1.js"
 import cookie from "./components/commom/js/cookie.js"
+import axios from "./axios/axios"
+axios.defaults.baseURL = "https://mock.yonyoucloud.com/mock/16414"
+Vue.prototype.$http = axios
 Vue.use(cookie)
-Vue.use($)
 Vue.config.productionTip = false
 Vue.prototype.$bus = new Vue()
 new Vue({

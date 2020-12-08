@@ -2,57 +2,49 @@
     <div>
         <main_nav :main_nav_title="main_nav_title"></main_nav>
         <el-card class="box-card">
-            <el-table :data="tableData" stripe style="width: 100%">
-                <el-table-column type="selection" width="55"> </el-table-column>
-                <el-table-column prop="date" label="日期" width="180">
+            <el-table :data="tableData" border stripe style="width: 100%">
+                <el-table-column type="index"></el-table-column>
+                <el-table-column prop="authName" label="名称">
                 </el-table-column>
-                <el-table-column prop="name" label="姓名" width="180">
+                <el-table-column prop="path" label="路径">
                 </el-table-column>
-                <el-table-column prop="address" label="地址"> </el-table-column>
+                <el-table-column prop="level" label="等级">
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.level == '0'">一级</el-tag>
+                        <el-tag
+                            type="success"
+                            v-if="scope.row.level == '1'"
+                            >二级</el-tag
+                        >
+                        <el-tag type="info" v-if="scope.row.level == '2'"
+                            >三级</el-tag
+                        >
+                    </template>
+                </el-table-column>
             </el-table>
         </el-card>
     </div>
 </template>
-
 <script>
 import main_nav from "@/components/common_vue/main_nav/main_nav.vue"
 export default {
-    name: "select1_2",
+    name: "powerList",
     data() {
         return {
             circleUrl: require("../../assets/bg.jpg"),
             username: "",
             password: "",
             activeindex: "1-1",
-            main_nav_title: { title1: "权限管理", title2: "角色列表" },
-            tableData: [
-                {
-                    date: "2016-05-02",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1518 弄"
-                },
-                {
-                    date: "2016-05-04",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1517 弄"
-                },
-                {
-                    date: "2016-05-01",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1519 弄"
-                },
-                {
-                    date: "2016-05-03",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1516 弄"
-                }
-            ]
+            main_nav_title: { title1: "权限管理", title2: "权限列表" },
+            tableData: []
         }
     },
     components: {
         main_nav
     },
-
+    created() {
+        this.getPowerList()
+    },
     mounted() {
         // 事件总线监听
         this.$bus.$on("quit", options => {
@@ -75,6 +67,10 @@ export default {
             console.log(data)
             this.$store.commit("clearToken")
             this.$router.push({ path: "/login" })
+        },
+        async getPowerList() {
+            const {data: res } =  await this.$http.get("/powerList")
+                this.tableData = res.data
         }
     }
 }

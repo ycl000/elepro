@@ -17,9 +17,9 @@
                         </el-input>
                     </div>
                 </el-col>
-                <el-col :span="4"
+                <el-col :span="3"
                     ><div class="grid-content bg-purple">
-                        <el-button type="primary">添加用户</el-button>
+                        <el-button type="primary" size="medium">添加用户</el-button>
                     </div></el-col
                 >
             </el-row>
@@ -43,12 +43,17 @@
                     <!-- </el-switch> -->
                 </el-table-column>
                 <el-table-column label="操作" width="180">
+                    <el-tooltip class="item" effect="dark" content="删除" placement="top">
                     <el-button type="danger" icon="el-icon-delete" size="mini"
-                        ></el-button
-                    >
+                        ></el-button>
+                    </el-tooltip>
+                    <el-tooltip class="item" effect="dark" content="编辑" placement="top">
                     <el-button type="primary" icon="el-icon-edit" size="mini"
-                        ></el-button
-                    >
+                        ></el-button>
+                    </el-tooltip>
+                    <el-tooltip class="item" effect="dark" content="详情" placement="top">
+                        <el-button type="info" icon="el-icon-document" size="mini"></el-button>
+                    </el-tooltip>
                 </el-table-column>
             </el-table>
         </el-card>
@@ -57,7 +62,6 @@
 
 <script>
 import main_nav from "@/components/common_vue/main_nav/main_nav.vue"
-import $ from "../../assets/jquery-3.4.1"
 import debounce from "../../components/commom/js/untils"
 export default {
     name: "userList",
@@ -95,19 +99,15 @@ export default {
             var username = this.get_Cookie()
             return username
         },
+
         quit: function(data) {
             console.log(data)
             this.$store.commit("clearToken")
             this.$router.push({ path: "/login" })
         },
-        getUserList() {
-            var that = this
-            $.get("https://mock.yonyoucloud.com/mock/16414/userList", function(
-                data
-            ) {
-                that.tableData = data.data
-                console.log(that.tableData)
-            })
+        async getUserList(){
+            const {data: res } =  await this.$http.get("/userList")
+            this.tableData = res.data
         },
         swithMessage(op, type) {
             this.$message({
