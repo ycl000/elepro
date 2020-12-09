@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 面包屑导航 组件 -->
-        <main_nav :main_nav_title="main_nav_title"></main_nav>
+        <mainNav :main_nav_title="main_nav_title"></mainNav>
         <el-card class="box-card">
             <el-row :gutter="20">
                 <el-col :span="6">
@@ -30,7 +30,7 @@
                 <el-table-column type="index"> </el-table-column>
                 <el-table-column
                     prop="goods_name"
-                    min-width="600"
+                    min-width="350"
                     label="商品名称"
                 >
                 </el-table-column>
@@ -115,7 +115,7 @@
 </template>
 
 <script>
-import main_nav from "@/components/common_vue/main_nav/main_nav.vue"
+import mainNav from "@/components/common_vue/main_nav/main_nav.vue"
 import debounce from "../../components/commom/js/untils"
 export default {
     name: "userList",
@@ -136,7 +136,7 @@ export default {
         }
     },
     components: {
-        main_nav
+        mainNav
     },
     filters: {
         formatDate: function(value) {

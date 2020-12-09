@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 面包屑导航 组件 -->
-        <main_nav :main_nav_title="main_nav_title"></main_nav>
+        <mainNav :main_nav_title="main_nav_title"></mainNav>
         <el-card class="box-card">
             <el-row :gutter="20">
                 <el-col :span="6">
@@ -19,7 +19,9 @@
                 </el-col>
                 <el-col :span="3"
                     ><div class="grid-content bg-purple">
-                        <el-button type="primary" size="medium">添加用户</el-button>
+                        <el-button type="primary" @click="addUser" size="medium"
+                            >添加用户</el-button
+                        >
                     </div></el-col
                 >
             </el-row>
@@ -43,16 +45,44 @@
                     <!-- </el-switch> -->
                 </el-table-column>
                 <el-table-column label="操作" width="180">
-                    <el-tooltip class="item" effect="dark" :enterable="false" content="删除" placement="top">
-                    <el-button type="danger" icon="el-icon-delete" size="mini"
+                    <el-tooltip
+                        class="item"
+                        effect="dark"
+                        :enterable="false"
+                        content="删除"
+                        placement="top"
+                    >
+                        <el-button
+                            type="danger"
+                            icon="el-icon-delete"
+                            size="mini"
                         ></el-button>
                     </el-tooltip>
-                    <el-tooltip class="item" effect="dark" :enterable="false" content="编辑" placement="top">
-                    <el-button type="primary" icon="el-icon-edit" size="mini"
+                    <el-tooltip
+                        class="item"
+                        effect="dark"
+                        :enterable="false"
+                        content="编辑"
+                        placement="top"
+                    >
+                        <el-button
+                            type="primary"
+                            icon="el-icon-edit"
+                            size="mini"
                         ></el-button>
                     </el-tooltip>
-                    <el-tooltip class="item" effect="dark" :enterable="false" content="详情" placement="top">
-                        <el-button type="info" icon="el-icon-document" size="mini"></el-button>
+                    <el-tooltip
+                        class="item"
+                        effect="dark"
+                        :enterable="false"
+                        content="详情"
+                        placement="top"
+                    >
+                        <el-button
+                            type="info"
+                            icon="el-icon-document"
+                            size="mini"
+                        ></el-button>
                     </el-tooltip>
                 </el-table-column>
             </el-table>
@@ -61,7 +91,7 @@
 </template>
 
 <script>
-import main_nav from "@/components/common_vue/main_nav/main_nav.vue"
+import mainNav from "@/components/common_vue/main_nav/main_nav.vue"
 import debounce from "../../components/commom/js/untils"
 export default {
     name: "userList",
@@ -76,7 +106,7 @@ export default {
         }
     },
     components: {
-        main_nav
+        mainNav
     },
     created() {
         this.getUserList()
@@ -105,8 +135,8 @@ export default {
             this.$store.commit("clearToken")
             this.$router.push({ path: "/login" })
         },
-        async getUserList(){
-            const {data: res } =  await this.$http.get("/userList")
+        async getUserList() {
+            const { data: res } = await this.$http.get("/userList")
             this.tableData = res.data
         },
         swithMessage(op, type) {
@@ -119,13 +149,23 @@ export default {
         },
         changeStatus: function(res, row) {
             console.log(res)
-            var msg = res?"启用成功":"禁用成功"
+            var msg = res ? "启用成功" : "禁用成功"
             row.status = !res
             debounce(() => {
                 row.status = res
                 this.swithMessage(msg, "success")
             }, 200)
+        },
+        addUser() {
+            // this.getUserList()
         }
+    },
+    beforeRouteEnter(to, from, next) {
+        // ...当组件被缓存时  新添加的用户不会显示  没有请求新的数据  可以再路由进入前 在请求获取数据
+        // 好像也能在离开前更新
+        next(vm => {
+            vm.getUserList()
+        })
     }
 }
 </script>

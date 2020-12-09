@@ -1,6 +1,6 @@
 <template>
     <div>
-        <main_nav :main_nav_title="main_nav_title"></main_nav>
+        <mainNav :main_nav_title="main_nav_title"></mainNav>
         <el-card class="box-card">
             <el-table :data="tableData" stripe style="width: 100%">
                 <el-table-column type="expand">
@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import main_nav from "@/components/common_vue/main_nav/main_nav.vue"
+import mainNav from "@/components/common_vue/main_nav/main_nav.vue"
 export default {
     name: "roleList",
     data() {
@@ -171,7 +171,7 @@ export default {
         }
     },
     components: {
-        main_nav
+        mainNav
     },
     created() {
         this.getRoleList()
@@ -202,8 +202,8 @@ export default {
             })
         },
         closeDialog() {
-            // 关闭dialog分配权限窗口时  取消选中的权限  
-             this.$refs.tree.setCheckedKeys([])
+            // 关闭dialog分配权限窗口时  取消选中的权限
+            this.$refs.tree.setCheckedKeys([])
             console.log("关闭", this.checkedKeys)
         },
         handleCheckChange() {},
@@ -231,7 +231,7 @@ export default {
     }
 }
 </script>
-<style>
+<style scoped>
 .dialog_left {
     text-align: left;
 }

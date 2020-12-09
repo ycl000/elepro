@@ -8,7 +8,9 @@
                 <template v-slot:sl><span>父组件自定义导航</span></template>
             </leftNav>
             <el-main>
-                <router-view></router-view>
+                <keep-alive>
+                    <router-view></router-view>
+                </keep-alive>
                 <!-- <div >
           <div >
             <span class="welcome_title">欢迎来到某某 服务管理平台</span>
@@ -71,14 +73,11 @@ export default {
     }
 }
 </script>
-<style >
-
+<style>
 .el-breadcrumb {
     /* padding: 0px 20px; */
     line-height: 40px !important;
     height: 40px;
     /* background: white; */
 }
-
-
 </style>
