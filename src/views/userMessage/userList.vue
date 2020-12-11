@@ -87,6 +87,51 @@
                 </el-table-column>
             </el-table>
         </el-card>
+        <el-dialog
+            title="添加用户"
+            width="70%"
+            :visible.sync="dialogVisible"
+            :before-close="handleClose"
+        >
+            <el-form
+                :label-position="labelPosition"
+                label-width="80px"
+                :rules="rules"
+                ref="ruleForm"
+                :model="formLabelAlign"
+            >
+                <el-form-item label="用户名" prop="name">
+                    <el-input
+                        v-model="formLabelAlign.name"
+                        placeholder="请输入用户名"
+                    ></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                    <el-input
+                        v-model="formLabelAlign.password"
+                        placeholder="请输入密码"
+                    ></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="email">
+                    <el-input
+                        v-model="formLabelAlign.email"
+                        placeholder="请输入邮箱"
+                    ></el-input>
+                </el-form-item>
+                <el-form-item label="电话" prop="phone">
+                    <el-input
+                        v-model="formLabelAlign.phone"
+                        placeholder="请输入电话"
+                    ></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submitForm('ruleForm')"
+                    >确 定</el-button
+                >
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -96,13 +141,69 @@ import debounce from "../../components/commom/js/untils"
 export default {
     name: "userList",
     data() {
+        // var checkEmail = (rule,value)=>{
+        //         console.log(rule,value)
+        //       };
+        var checkPhone = (rule, value,callback) => {
+          // 无论验证正确与否  都要调用callback  不然验证或者提交无响应
+            var re = /(^1)[3|5|7|8|9][0-9]{9}/
+            if(!re.test(value)){
+              return callback(new Error('请输入正确的电话号码'))
+            }
+            return callback()
+
+        }
         return {
             circleUrl: require("../../assets/bg.jpg"),
             username: "",
             password: "",
             activeindex: "1-1",
             main_nav_title: { title1: "用户管理", title2: "用户列表" },
-            tableData: []
+            tableData: [],
+            dialogVisible: false,
+            labelPosition: "right",
+            formLabelAlign: {
+                name: "",
+                password: "",
+                email: "",
+                phone: ""
+            },
+
+            rules: {
+                name: [
+                    {
+                        required: true,
+                        message: "请输入用户名",
+                        trigger: "blur"
+                    },
+                    {
+                        min: 3,
+                        max: 5,
+                        message: "长度在 3 到 5 个字符",
+                        trigger:  ["blur","change"]
+                    }
+                ],
+                password: [
+                    { required: true, message: "请输入密码", trigger: "blur" },
+                    {
+                        min: 6,
+                        max: 11,
+                        message: "长度在 6 到 11 个字符",
+                        trigger:  ["blur","change"]
+                    }
+                ],
+                email: [
+                    { required: true, message: "请输入邮箱", trigger: "blur" },
+                    {
+                        type: "email",
+                        trigger: ["blur","change"],
+                        message: "请输入正确的邮箱"
+                    }
+                ],
+                phone: [
+                    { validator: checkPhone, trigger:  ["blur","change"],required: true}
+                ]
+            }
         }
     },
     components: {
@@ -157,8 +258,31 @@ export default {
             }, 200)
         },
         addUser() {
+            console.log("sss")
+            this.dialogVisible = true
             // this.getUserList()
-        }
+        },
+        handleClose() {
+            this.dialogVisible = false
+        },
+        submitForm(formName){
+          
+          this.$refs[formName].validate((valid) => {
+            console.log(valid)
+          if (!valid) {
+            //  this.$message('添加失败  请重新填写信息');
+            return false;
+           
+          } 
+          alert('submit!');
+          this.dialogVisible=false
+        });
+        
+      },
+      resetForm(formName) {
+        this.$refs[formName].resetFields();
+      }
+        
     },
     beforeRouteEnter(to, from, next) {
         // ...当组件被缓存时  新添加的用户不会显示  没有请求新的数据  可以再路由进入前 在请求获取数据
@@ -175,5 +299,8 @@ export default {
 }
 .el-col.el-col-6 {
     padding-left: 20px !important;
+}
+.el-dialog__wrapper {
+    text-align: left;
 }
 </style>
