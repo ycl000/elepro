@@ -47,3 +47,6 @@ body > .el-container {
 .el-pagination{
     margin-top: 20px;
 }
+a{
+    text-decoration: none;
+}

@@ -36,32 +36,43 @@ const routes = [
             {
                 path: "/roleList",
                 name: "roleList",
-                component: () =>import( "../views/powerMessage/roleList.vue")
+                component: () => import("../views/powerMessage/roleList.vue")
             },
             {
                 path: "/powerList",
                 name: "powerList",
-                component: () =>import( "../views/powerMessage/powerList.vue")
+                component: () => import("../views/powerMessage/powerList.vue")
             },
             {
-                path:"/productList",
-                name:"productList",
-                component:()=>import("../views/productMessage/productList")
+                path: "/productList",
+                name: "productList",
+                component: () => import("../views/productMessage/productList")
             },
             {
-                path:"/productSort",
-                name:"productSort",
-                component:()=>import("../views/productMessage/productSort")
+                path: "/productSort",
+                name: "productSort",
+                component: () => import("../views/productMessage/productSort")
             },
             {
-                path:"/sortPramas",
-                name:"sortPramas",
-                component:()=>import("../views/productMessage/sortPramas")
+                path: "/sortPramas",
+                name: "sortPramas",
+                component: () => import("../views/productMessage/sortPramas")
             },
             {
-                path:"/orderList",
-                name:"orderList",
-                component:()=>import("../views/orderMessage/orderList")
+                path: "/orderList",
+                name: "orderList",
+                component: () => import("../views/orderMessage/orderList")
+            },
+            {
+                path: "/dataReports",
+                name: "dataStatistics",
+                component: () =>
+                    import("../views/dataStatistics/dataStatistics")
+            },
+            {
+                path: "/person",
+                name: "person",
+                component: () => import("../views/personer")
             }
         ]
     },
@@ -73,7 +84,7 @@ const routes = [
     {
         path: "/about",
         name: "About",
-        component: () =>import("../views/About.vue")
+        component: () => import("../views/About.vue")
     }
 ]
 
