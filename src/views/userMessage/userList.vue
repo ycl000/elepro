@@ -144,14 +144,13 @@ export default {
         // var checkEmail = (rule,value)=>{
         //         console.log(rule,value)
         //       };
-        var checkPhone = (rule, value,callback) => {
-          // 无论验证正确与否  都要调用callback  不然验证或者提交无响应
+        var checkPhone = (rule, value, callback) => {
+            // 无论验证正确与否  都要调用callback  不然验证或者提交无响应
             var re = /(^1)[3|5|7|8|9][0-9]{9}/
-            if(!re.test(value)){
-              return callback(new Error('请输入正确的电话号码'))
+            if (!re.test(value)) {
+                return callback(new Error("请输入正确的电话号码"))
             }
             return callback()
-
         }
         return {
             circleUrl: require("../../assets/bg.jpg"),
@@ -180,7 +179,7 @@ export default {
                         min: 3,
                         max: 5,
                         message: "长度在 3 到 5 个字符",
-                        trigger:  ["blur","change"]
+                        trigger: ["blur", "change"]
                     }
                 ],
                 password: [
@@ -189,19 +188,23 @@ export default {
                         min: 6,
                         max: 11,
                         message: "长度在 6 到 11 个字符",
-                        trigger:  ["blur","change"]
+                        trigger: ["blur", "change"]
                     }
                 ],
                 email: [
                     { required: true, message: "请输入邮箱", trigger: "blur" },
                     {
                         type: "email",
-                        trigger: ["blur","change"],
+                        trigger: ["blur", "change"],
                         message: "请输入正确的邮箱"
                     }
                 ],
                 phone: [
-                    { validator: checkPhone, trigger:  ["blur","change"],required: true}
+                    {
+                        validator: checkPhone,
+                        trigger: ["blur", "change"],
+                        required: true
+                    }
                 ]
             }
         }
@@ -265,24 +268,20 @@ export default {
         handleClose() {
             this.dialogVisible = false
         },
-        submitForm(formName){
-          
-          this.$refs[formName].validate((valid) => {
-            console.log(valid)
-          if (!valid) {
-            //  this.$message('添加失败  请重新填写信息');
-            return false;
-           
-          } 
-          alert('submit!');
-          this.dialogVisible=false
-        });
-        
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
-        
+        submitForm(formName) {
+            this.$refs[formName].validate(valid => {
+                console.log(valid)
+                if (!valid) {
+                    //  this.$message('添加失败  请重新填写信息');
+                    return false
+                }
+                alert("submit!")
+                this.dialogVisible = false
+            })
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields()
+        }
     },
     beforeRouteEnter(to, from, next) {
         // ...当组件被缓存时  新添加的用户不会显示  没有请求新的数据  可以再路由进入前 在请求获取数据
