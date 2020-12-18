@@ -4,20 +4,17 @@
 
 <script>
 export default {
-  data () {
-    return {
-    };
-  },
+    data() {
+        return {}
+    },
 
-  components: {},
+    components: {},
 
-  computed: {},
+    computed: {},
 
-  mounted() {},
+    mounted() {},
 
-  methods: {}
+    methods: {}
 }
-
 </script>
-<style lang='scss' scoped>
-</style>
+<style lang="scss" scoped></style>

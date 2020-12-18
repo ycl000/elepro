@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 面包屑导航 组件 -->
-        <mainNav :main_nav_title="main_nav_title"></mainNav>
+        <main-nav :main_nav_title="main_nav_title"></main-nav>
         <el-card class="box-card">
             <el-row :gutter="20">
                 <el-col :span="6">
@@ -61,7 +61,10 @@
                 >
                     <!-- <el-switch :value=""> -->
                     <template slot-scope="scope">
-                        {{ scope.row.create_time | formatDate }}
+                        {{
+                            scope.row.create_time
+                                | formatDate("嘿哈", "sss", "dfgdf")
+                        }}
                         <!-- {{new Date()}} -->
                     </template>
                     <!-- </el-switch> -->
@@ -97,28 +100,61 @@
                         class="item"
                         effect="dark"
                         :enterable="false"
-                        content="订单详情"
+                        content="物流详情"
                         placement="top"
                     >
                         <el-button
                             type="info"
-                            icon="el-icon-document"
+                            icon="el-icon-location"
                             size="mini"
+                            @click="orderInfo"
                         ></el-button>
                     </el-tooltip>
                 </el-table-column>
             </el-table>
         </el-card>
+        <el-dialog
+            title="订单物流详情"
+            :visible.sync="dialogVisible"
+            width="50%"
+            :before-close="handleClose"
+        >
+            <el-timeline :reverse="reverse">
+                <el-timeline-item
+                    v-for="(activity, index) in activities"
+                    :key="index"
+                    :timestamp="activity.ftime"
+                    :icon="index == 0 ? icon : 'el-icon-more'"
+                    size="large"
+                    :type="index == 0 ? 'primary' : ''"
+                >
+                    {{ activity.context }}
+                </el-timeline-item>
+            </el-timeline>
+            <span slot="footer" class="dialog-footer">
+                <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
+                <el-button type="primary" @click="dialogVisible = false"
+                    >确 定</el-button
+                >
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+// 驼峰用法    <mian-nav></main-nav>
 import mainNav from "@/components/common_vue/main_nav/main_nav.vue"
+// 格式化时间啊
+import untils from "../../untils/untils"
 export default {
     data() {
         return {
             orderList: [],
-            main_nav_title: { title1: "订单管理", title2: "订单列表" }
+            main_nav_title: { title1: "订单管理", title2: "订单列表" },
+            reverse: false,
+            dialogVisible: false,
+            activities: [],
+            icon: "el-icon-location"
         }
     },
     created() {
@@ -135,29 +171,35 @@ export default {
             const { data: res } = await this.$http.get("/orderList")
             this.orderList = res.data.goods
             console.log(res.data.goods)
+        },
+        orderInfo: function() {
+            this.getOrderInfo()
+        },
+        async getOrderInfo() {
+            const { data: res } = await this.$http.get(
+                "https://mock.yonyoucloud.com/mock/16414/orderInfo"
+            )
+            this.activities = res.data
+            console.log(this.activities)
+            this.dialogVisible = true
+        },
+        handleClose() {
+            this.dialogVisible = false
         }
     },
     filters: {
-        formatDate: function(value) {
-            let date = new Date(value)
-            let y = date.getFullYear()
-            let MM = date.getMonth() + 1
-            MM = MM < 10 ? "0" + MM : MM
-            let d = date.getDate()
-            d = d < 10 ? "0" + d : d
-            let h = date.getHours()
-            h = h < 10 ? "0" + h : h
-            let m = date.getMinutes()
-            m = m < 10 ? "0" + m : m
-            let s = date.getSeconds()
-            s = s < 10 ? "0" + s : s
-            return y + "-" + MM + "-" + d + " " + h + ":" + m + ":" + s
-        }
+        formatDate: untils.fromatData
     }
 }
 </script>
-<style scoped>
+<style scope>
 .el-col.el-col-6 {
     padding-left: 20px !important;
+}
+.el-dialog {
+    text-align: left;
+}
+.el-timeline {
+    margin: 0px 10px 0px 50px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <mainNav :main_nav_title="main_nav_title"></mainNav>
+        <main-nav :main_nav_title="main_nav_title"></main-nav>
         <el-card class="box-card">
             <!-- gutter 表示每一栏之间的距离 -->
             <el-row :gutter="20">
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+// 驼峰用法    <mian-nav></main-nav>
 import mainNav from "../../components/common_vue/main_nav/main_nav"
 // 引入基本模板
 let echarts = require("echarts/lib/echarts")

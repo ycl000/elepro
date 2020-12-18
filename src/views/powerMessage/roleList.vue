@@ -1,6 +1,6 @@
 <template>
     <div>
-        <mainNav :main_nav_title="main_nav_title"></mainNav>
+        <main-nav :main_nav_title="main_nav_title"></main-nav>
         <el-card class="box-card">
             <el-table :data="tableData" stripe style="width: 100%">
                 <el-table-column type="expand">
@@ -202,7 +202,7 @@ export default {
             })
         },
         closeDialog() {
-            // 关闭dialog分配权限窗口时  取消选中的权限
+            // 关闭dialog分配权限窗口时  取消选中的权限  不然权限会一直叠加
             this.$refs.tree.setCheckedKeys([])
             console.log("关闭", this.checkedKeys)
         },
@@ -210,7 +210,6 @@ export default {
         powerClick(data) {
             this.checkedKeys = []
             this.getRolepower(data, this.checkedKeys)
-
             this.$nextTick(function() {
                 this.dialogVisible = true
                 // console.log(this.$refs.tree)

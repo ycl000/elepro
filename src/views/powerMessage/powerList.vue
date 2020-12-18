@@ -1,19 +1,16 @@
 <template>
     <div>
-        <main_nav :main_nav_title="main_nav_title"></main_nav>
+        <main-nav :main_nav_title="main_nav_title"></main-nav>
         <el-card class="box-card">
             <el-table :data="tableData" border stripe style="width: 100%">
                 <el-table-column type="index"></el-table-column>
                 <el-table-column prop="authName" label="名称">
                 </el-table-column>
-                <el-table-column prop="path" label="路径">
-                </el-table-column>
+                <el-table-column prop="path" label="路径"> </el-table-column>
                 <el-table-column prop="level" label="等级">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.level == '0'">一级</el-tag>
-                        <el-tag
-                            type="success"
-                            v-if="scope.row.level == '1'"
+                        <el-tag type="success" v-if="scope.row.level == '1'"
                             >二级</el-tag
                         >
                         <el-tag type="info" v-if="scope.row.level == '2'"
@@ -26,7 +23,7 @@
     </div>
 </template>
 <script>
-import main_nav from "@/components/common_vue/main_nav/main_nav.vue"
+import mainNav from "@/components/common_vue/main_nav/main_nav.vue"
 export default {
     name: "powerList",
     data() {
@@ -40,7 +37,7 @@ export default {
         }
     },
     components: {
-        main_nav
+        mainNav
     },
     created() {
         this.getPowerList()
@@ -69,11 +66,10 @@ export default {
             this.$router.push({ path: "/login" })
         },
         async getPowerList() {
-            const {data: res } =  await this.$http.get("/powerList")
-                this.tableData = res.data
+            const { data: res } = await this.$http.get("/powerList")
+            this.tableData = res.data
         }
     }
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

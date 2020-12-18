@@ -125,6 +125,11 @@ export default {
     flex-direction: column;
     justify-content: space-around;
 }
+.userInput,
+.passInput,
+.login_btn {
+    text-align: center;
+}
 .userInput input,
 .passInput input {
     height: 40px;

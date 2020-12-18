@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 面包屑导航 组件 -->
-        <mainNav :main_nav_title="main_nav_title"></mainNav>
+        <main-nav :main_nav_title="main_nav_title"></main-nav>
         <el-card class="box-card">
             <el-row :gutter="20">
                 <el-col :span="6">
@@ -136,8 +136,9 @@
 </template>
 
 <script>
+// 驼峰用法    <mian-nav></main-nav>
 import mainNav from "@/components/common_vue/main_nav/main_nav.vue"
-import debounce from "../../components/commom/js/untils"
+import until from "../../components/commom/js/untils"
 export default {
     name: "userList",
     data() {
@@ -156,6 +157,7 @@ export default {
             circleUrl: require("../../assets/bg.jpg"),
             username: "",
             password: "",
+            statusClick: true,
             activeindex: "1-1",
             main_nav_title: { title1: "用户管理", title2: "用户列表" },
             tableData: [],
@@ -217,10 +219,10 @@ export default {
     },
     mounted() {
         // 事件总线监听
-        this.$bus.$on("quit", options => {
-            // console.log(options)
-            this.quit(options)
-        })
+        // this.$bus.$on("quit", options => {
+        //     // console.log(options)
+        //     this.quit(options)
+        // })
         // console.log(this.getCookie());
         if (!this.getCookie()) {
             this.$router.push({ name: "Login" })
@@ -234,16 +236,18 @@ export default {
             return username
         },
 
-        quit: function(data) {
-            console.log(data)
-            this.$store.commit("clearToken")
-            this.$router.push({ path: "/login" })
-        },
+        // quit: function(data) {
+        //     console.log(data)
+        //     this.$store.commit("clearToken")
+        //     this.$router.push({ path: "/login" })
+        // },
         async getUserList() {
             const { data: res } = await this.$http.get("/userList")
             this.tableData = res.data
         },
         swithMessage(op, type) {
+            // 关闭所有消息框
+            this.$message.closeAll()
             this.$message({
                 showClose: true,
                 message: op,
@@ -252,14 +256,16 @@ export default {
             })
         },
         changeStatus: function(res, row) {
-            console.log(res)
-            var msg = res ? "启用成功" : "禁用成功"
             row.status = !res
-            debounce(() => {
-                row.status = res
-                this.swithMessage(msg, "success")
-            }, 200)
+            this.textClick2(res, row)
+            // this.textClick(res, row) 问题？ 为什么this指向没有变
         },
+        textClick: until.throttle(500),
+        textClick2: until.throttleText((e, option) => {
+            var msg = option[0] ? "启用成功" : "禁用成功"
+            option[1].status = option[0]
+            e.swithMessage(msg, "success")
+        }, 500),
         addUser() {
             console.log("sss")
             this.dialogVisible = true

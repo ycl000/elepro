@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 面包屑导航 组件 -->
-        <mainNav :main_nav_title="main_nav_title"></mainNav>
+        <main-nav :main_nav_title="main_nav_title"></main-nav>
         <el-card class="box-card">
             <el-row :gutter="20">
                 <el-col :span="6">
