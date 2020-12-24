@@ -4,11 +4,18 @@
             插槽作用于的使用 子组件要定义带有属性row并绑定数据的插槽slot
             父组件使用slot-scope="name" 以 { 属性名 : 数据 } 的形式接收
         </div>
-        <TextP :tabData="tabData">
+
+        <TextP :arr="arr">
+            <template slot-scope="scope">
+                <div>{{ scope }}</div>
+            </template>
+        </TextP>
+
+        <!-- <TextP :tabData="tabData">
             <template slot-scope="scope">
                 <div>{{ scope.row }} 嘿哈</div>
             </template>
-        </TextP>
+        </TextP> -->
     </div>
 </template>
 
@@ -38,6 +45,11 @@ export default {
                     name: "关于4",
                     isActive: false
                 }
+            ],
+            arr: [
+                { name: "John", age: 24 },
+                { name: "Tom", age: 25 },
+                { name: "Jake", age: 16 }
             ]
         }
     },

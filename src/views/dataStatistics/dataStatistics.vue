@@ -1,6 +1,67 @@
 <template>
     <div>
         <main-nav :main_nav_title="main_nav_title"></main-nav>
+        <el-card class="card">
+            <el-row :gutter="50">
+                <el-col :span="6">
+                    <el-card class="cardItem">
+                        <div class="cardItem1">
+                            <div class="cardLeft">
+                                <span class="el-icon-document-checked"></span>
+                                <!-- <div><span>今日累计销售</span></div> -->
+                            </div>
+                            <div class="cardRight">
+                                <div><span>今日累计销售</span></div>
+                            </div>
+                        </div>
+                        <div class="cardItem2"><span>8000 </span></div>
+                    </el-card>
+                </el-col>
+                <el-col :span="6"
+                    ><el-card class="cardItem">
+                        <div class="cardItem1">
+                            <div class="cardLeft">
+                                <span class="el-icon-document-checked"></span>
+                                <!-- <div><span>今日累计销售</span></div> -->
+                            </div>
+                            <div class="cardRight">
+                                <div><span>今月累计销售</span></div>
+                            </div>
+                        </div>
+                        <div class="cardItem2"><span>8000 </span></div>
+                    </el-card>
+                </el-col>
+                <el-col :span="6"
+                    ><el-card class="cardItem">
+                        <div class="cardItem1">
+                            <div class="cardLeft">
+                                <span class="el-icon-document-checked"></span>
+                                <!-- <div><span>今日累计销售</span></div> -->
+                            </div>
+                            <div class="cardRight">
+                                <div><span>今日累计采购</span></div>
+                            </div>
+                        </div>
+                        <div class="cardItem2"><span>8000 </span></div>
+                    </el-card></el-col
+                >
+                <el-col :span="6"
+                    ><el-card class="cardItem">
+                        <div class="cardItem1">
+                            <div class="cardLeft">
+                                <span class="el-icon-document-checked"></span>
+                                <!-- <div><span>今日累计销售</span></div> -->
+                            </div>
+                            <div class="cardRight">
+                                <div><span>本月累计采购</span></div>
+                            </div>
+                        </div>
+                        <div class="cardItem2"><span>8000 </span></div>
+                    </el-card></el-col
+                >
+            </el-row>
+        </el-card>
+
         <el-card class="box-card">
             <!-- gutter 表示每一栏之间的距离 -->
             <el-row :gutter="20">
@@ -9,6 +70,9 @@
                 </el-col>
                 <el-col :span="12">
                     <div id="monDataLineBar" class="monDataLineBar"></div>
+                </el-col>
+                <el-col :span="12">
+                    <div id="monCategory" class="monCategory"></div>
                 </el-col>
                 <!-- <el-col :span="6"></el-col>
                 <el-col :span="6"></el-col> -->
@@ -29,6 +93,8 @@ require("echarts/lib/chart/pie")
 import "echarts/lib/component/legend"
 import "echarts/lib/component/title"
 import "echarts/lib/component/tooltip"
+import "echarts/lib/component/graphic"
+// import "echarts/l"
 export default {
     data() {
         return {
@@ -44,6 +110,7 @@ export default {
         // 柱状图初始化
         this.dataBarInit()
         this.monDataLineInit()
+        this.monCInit()
     },
 
     methods: {
@@ -236,13 +303,113 @@ export default {
                 ]
             }
             monDatabarLine.setOption(option)
+        },
+        monCInit: function() {
+            var monCInit = echarts.init(document.getElementById("monCategory"))
+            var option = {
+                xAxis: {
+                    type: "category",
+                    boundaryGap: false,
+                    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+                },
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "cross",
+                        crossStyle: {
+                            color: "#999"
+                        }
+                    }
+                },
+                yAxis: {
+                    type: "value"
+                },
+                series: [
+                    {
+                        data: [820, 932, 901, 934, 1290, 1330, 1320],
+                        type: "line",
+                        areaStyle: {
+                            // 渐变效果
+                            color: {
+                                type: "linear",
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [
+                                    {
+                                        offset: 0,
+                                        color: "red" // 0% 处的颜色
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: "#daa3ad" // 100% 处的颜色
+                                    }
+                                ],
+                                global: false // 缺省为 false
+                            }
+                        }
+                    }
+                ]
+            }
+            monCInit.setOption(option)
         }
     }
 }
 </script>
 <style scoped>
 .monDataBar,
-.monDataLineBar {
+.monDataLineBar,
+.monCategory {
     min-height: 400px;
+}
+.cardItem {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    background: #e3e5e6;
+}
+
+.cardLeft span {
+    height: 70px;
+    width: 70px;
+    /* border: 50%; */
+    justify-content: center;
+    /* border: 50%; */
+    align-items: center;
+    display: flex;
+    color: white;
+    font-size: 30px;
+}
+.cardLeft {
+    border-radius: 50%;
+    background-image: linear-gradient(45deg, #bb9c28, #95e690);
+}
+
+.cardRight {
+    padding: 0 0 0 20px;
+    font-size: 18px;
+}
+.cardItem1 {
+    display: flex;
+    align-items: center;
+}
+.cardItem2 {
+    padding: 20px;
+    text-align: left;
+    font-size: 25px;
+    font-weight: bold;
+}
+.card .el-col-6:nth-child(2) .cardLeft {
+    background-image: linear-gradient(45deg, #bb9c28, #b154a1);
+}
+.card .el-col-6:nth-child(3) .cardLeft {
+    background-image: linear-gradient(45deg, #94e24b, #b15470);
+}
+.card .el-col-6:nth-child(4) .cardLeft {
+    background-image: linear-gradient(45deg, #2cb0b4, #b154a1);
+}
+.box-card {
+    margin-top: 20px;
 }
 </style>
