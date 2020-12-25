@@ -6,7 +6,9 @@ import "./plugins/element.js"
 import "./assets/gobalCss/gobalcss.css"
 import cookie from "./components/commom/js/cookie.js"
 import axios from "./axios/axios"
-axios.defaults.baseURL = "https://mock.yonyoucloud.com/mock/16414"
+import "./mock/mock"
+// import Axios from "axios"
+// axios.defaults.baseURL = "https://mock.yonyoucloud.com/mock/16414"
 Vue.prototype.$http = axios
 Vue.use(cookie)
 Vue.config.productionTip = false

@@ -133,13 +133,13 @@
             </span>
         </el-dialog>
     </div>
-    
 </template>
 
 <script>
 // 驼峰用法    <mian-nav></main-nav>
 import mainNav from "@/components/common_vue/main_nav/main_nav.vue"
 import until from "../../components/commom/js/untils"
+import xhr from "../../axios/xhr/xhr"
 export default {
     name: "userList",
     data() {
@@ -219,6 +219,14 @@ export default {
         this.getUserList()
     },
     mounted() {
+        // var url = "/msdk"
+        xhr({
+            url: "/msdk",
+            success: function(data) {
+                console.log(data)
+            }
+        })
+
         // 事件总线监听
         // this.$bus.$on("quit", options => {
         //     // console.log(options)
